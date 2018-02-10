@@ -11,36 +11,41 @@
 					</Toolbar>
 				</subHeader>
 				<content>
-					<List
+					<Table
 						id="idList"
-						items="{/ListCollection}"
-						selectionChange="onSelectionChange"
-						includeItemInSelection="true" >
+						items="{local>/results}" >
+						<columns>
+							<Column>
+							</Column>
+							<Column>
+								<Text text="Name" />
+							</Column>
+							<Column>
+								<Text text="Average Price" />
+							</Column>
+							<Column>
+								<Text text="Price Range" />
+							</Column>
+						</columns>
 						<items>
-							<CustomListItem>
-								<HBox>
+							<ColumnListItem>
+								<cells>
 									<Image
 										src="{img>/products/pic1}"
-										densityAware="false"
-										width="{/imageWidth}" >
-										<layoutData>
-											<FlexItemData growFactor="1" />
-										</layoutData>
+										densityAware="false" >
 									</Image>
-									<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
-										<Link text="{Name}" target="{ProductPicUrl}" press="handlePress"/>
-										<Label text="{ProductId}"/>
-									</VBox>
-								</HBox>
-							</CustomListItem>
-							<!--<StandardListItem-->
-							<!--	title="{Name}"-->
-							<!--	description="{ProductId}"-->
-							<!--	icon="{ProductPicUrl}"-->
-							<!--	iconDensityAware="false"-->
-							<!--	iconInset="false" />-->
+									<ObjectIdentifier
+										title="{local>name}"/>
+									<ObjectNumber
+										number="RM {local>average_price}"
+										unit="/{local>uom}" />
+									<ObjectNumber
+										number="RM{local>lower_range} - RM{local>higher_range}"
+										unit="/{local>uom}" />
+								</cells>
+							</ColumnListItem>
 						</items>
-					</List>
+					</Table>
 					
 				</content>
 			</Page>

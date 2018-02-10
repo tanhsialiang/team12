@@ -14,7 +14,7 @@ sap.ui.define([
 		 */
 			onInit: function() {
 				this.oLocUtil = new Location();
-				// this.getView().setModel(new JSONModel(), "local");
+				this.getView().setModel(new JSONModel(), "local");
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.getRoute("InitList").attachPatternMatched(this._onObjectMatched, this);
 			},
@@ -24,6 +24,7 @@ sap.ui.define([
 				// 	path: "/" + oEvent.getParameter("arguments").invoicePath,
 				// 	model: "invoice"
 				// });
+				this.getView().setBusy(true);
 				this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));          
 			},
 
@@ -54,7 +55,7 @@ sap.ui.define([
 		//	}
 		
 		onSearch: function(oEvent){
-			sap.m.MessageToast.show("Search Triggered");
+			this.getView().setBusy(true);
 			var that = this;
 			var oEntry = {};
 			oEntry.query = [];
@@ -69,7 +70,37 @@ sap.ui.define([
               data: JSON.stringify(oEntry),
               contentType: "application/json" ,
 			  success: function(oResult) {  
-				  debugger;
+				  var oJsonModel = that.getView().getModel("local");
+				  oJsonModel.setData({
+					  "results": [
+					    {
+					      "name": "Mackerel tuna",
+					      "lower_range": "5",
+					      "higher_range": "10",
+					      "uom": "KG",
+					      "average_price": "7.5"
+					    },{
+					      "name": "Black pomfret",
+					      "lower_range": "5",
+					      "higher_range": "10",
+					      "uom": "KG",
+					      "average_price": "7.5"
+					    },{
+					      "name": "White Pomfret",
+					      "lower_range": "5",
+					      "higher_range": "10",
+					      "uom": "KG",
+					      "average_price": "7.5"
+					    },{
+					      "name": "Torpedo scad",
+					      "lower_range": "5",
+					      "higher_range": "10",
+					      "uom": "KG",
+					      "average_price": "7.5"
+					    }
+					  ]
+					});
+					that.getView().setBusy(false);
                     
               },
                 error: function() {  

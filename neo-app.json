@@ -21,12 +21,12 @@
     },
     {
     	"path": "/api",
-      "target": {
-        "type": "destination",
-        "name": "elasticbeanstalk",
-        "entryPath": "/api"
-      },
-      "description": "API"
+	      "target": {
+	        "type": "destination",
+	        "name": "elasticbeanstalk",
+	        "entryPath": "/"
+	      },
+	      "description": "API"
     }
   ],
   "sendWelcomeFileRedirect": true
