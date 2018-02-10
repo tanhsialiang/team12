@@ -17,12 +17,28 @@
 						selectionChange="onSelectionChange"
 						includeItemInSelection="true" >
 						<items>
-							<StandardListItem
-								title="{Name}"
-								description="{ProductId}"
-								icon="{ProductPicUrl}"
-								iconDensityAware="false"
-								iconInset="false" />
+							<CustomListItem>
+								<HBox>
+									<Image
+										src="{img>/products/pic1}"
+										densityAware="false"
+										width="{/imageWidth}" >
+										<layoutData>
+											<FlexItemData growFactor="1" />
+										</layoutData>
+									</Image>
+									<VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+										<Link text="{Name}" target="{ProductPicUrl}" press="handlePress"/>
+										<Label text="{ProductId}"/>
+									</VBox>
+								</HBox>
+							</CustomListItem>
+							<!--<StandardListItem-->
+							<!--	title="{Name}"-->
+							<!--	description="{ProductId}"-->
+							<!--	icon="{ProductPicUrl}"-->
+							<!--	iconDensityAware="false"-->
+							<!--	iconInset="false" />-->
 						</items>
 					</List>
 					

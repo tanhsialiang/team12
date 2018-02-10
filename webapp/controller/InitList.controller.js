@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
+	"sap/ui/model/json/JSONModel",
 	"team12/Team12_Fish/util/location"
-], function(Controller, Location) {
+], function(Controller, JSONModel,Location) {
 	"use strict";
 
 	return Controller.extend("team12.Team12_Fish.controller.InitList", {
@@ -13,7 +14,7 @@ sap.ui.define([
 		 */
 			onInit: function() {
 				this.oLocUtil = new Location();
-				
+				// this.getView().setModel(new JSONModel(), "local");
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.getRoute("InitList").attachPatternMatched(this._onObjectMatched, this);
 			},
@@ -54,6 +55,27 @@ sap.ui.define([
 		
 		onSearch: function(oEvent){
 			sap.m.MessageToast.show("Search Triggered");
+			var that = this;
+			var oEntry = {};
+			oEntry.query = [];
+			if(oEvent.getParameter("query")!== ""){
+				oEntry.query.push({"field": "location", "query": oEvent.getParameter("query")});
+			}
+			
+			$.ajax({
+			  type: "POST",
+			  url: '/api/search',
+			  dataType: "json", 
+              data: JSON.stringify(oEntry),
+              contentType: "application/json" ,
+			  success: function(oResult) {  
+				  debugger;
+                    
+              },
+                error: function() {  
+                	new sap.m.MessageToast.show("Error while searching");
+                }  
+			});
 		},
 		
 		_setSearchDefaultValue: function(sLocation){
