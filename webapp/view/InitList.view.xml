@@ -5,8 +5,8 @@
 			<Page title="Fish Listing">
 				<subHeader>
 					<Toolbar>
-						<SearchField
-							liveChange="onSearch"
+						<SearchField id="idSearchField"
+							search="onSearch"
 							width="100%" />
 					</Toolbar>
 				</subHeader>

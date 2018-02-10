@@ -23,7 +23,7 @@ sap.ui.define([
 				// 	path: "/" + oEvent.getParameter("arguments").invoicePath,
 				// 	model: "invoice"
 				// });
-				this.oLocUtil.getLocation();          
+				this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));          
 			},
 
 		/**
@@ -52,17 +52,14 @@ sap.ui.define([
 		//
 		//	}
 		
-		_getLocation: function(){
-			var latLng = new google.maps.LatLng(lat,log);
-   //         geocoder.geocode({latLng: latLng}, function(responses){     
-   //         	if (responses && responses.length > 0){                                	
-   //             	var formatedAddress=responses[0].formatted_address;
-   //                 sap.m.MessageToast.show("You have selected : " + formatedAddress);
-   //         	} else {       
-   //             	sap.m.MessageToast.show('Not getting Any address for given latitude and longitude.');     
-   //         	}   
-   //         }
+		onSearch: function(oEvent){
+			sap.m.MessageToast.show("Search Triggered");
+		},
+		
+		_setSearchDefaultValue: function(sLocation){
+			this.getView().byId("idSearchField").setValue(sLocation).fireSearch();
 		}
+
 
 	});
 
