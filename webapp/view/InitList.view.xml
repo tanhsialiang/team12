@@ -28,26 +28,31 @@
 							</Column>
 						</columns>
 						<items>
-							<ColumnListItem>
+							<ColumnListItem type="Navigation" press="onPressItem">
 								<cells>
 									<Image
-										src="{img>/products/pic1}"
-										densityAware="false" >
+										src="{
+											path: 'local>species',
+											formatter: '.setFishPhoto'
+										}"
+										densityAware="false"
+										width="100%" >
 									</Image>
 									<ObjectIdentifier
-										title="{local>name}"/>
-									<ObjectNumber
-										number="RM {local>average_price}"
-										unit="/{local>uom}" />
-									<ObjectNumber
-										number="RM{local>lower_range} - RM{local>higher_range}"
-										unit="/{local>uom}" />
+										title="{local>species}"/>
+									<Text text="RM {local>average_price}/{local>uom}"/>
+									<Text text="RM {local>lower_range} - RM{local>higher_range}/{local>uom}"/>
 								</cells>
 							</ColumnListItem>
 						</items>
 					</Table>
 					
 				</content>
+				<footer>
+					<Toolbar>
+						<Button text="Input Data" press="onPressInputData" />
+					</Toolbar>
+				</footer>
 			</Page>
 		</pages>
 	</App>

@@ -60,7 +60,7 @@ sap.ui.define([
 			var oEntry = {};
 			oEntry.query = [];
 			if(oEvent.getParameter("query")!== ""){
-				oEntry.query.push({"field": "location", "query": oEvent.getParameter("query")});
+				oEntry.query.push({"field": "location", "value": oEvent.getParameter("query")});
 			}
 			
 			$.ajax({
@@ -74,25 +74,25 @@ sap.ui.define([
 				  oJsonModel.setData({
 					  "results": [
 					    {
-					      "name": "Mackerel tuna",
+					      "species": "Mackerel tuna",
 					      "lower_range": "5",
 					      "higher_range": "10",
 					      "uom": "KG",
 					      "average_price": "7.5"
 					    },{
-					      "name": "Black pomfret",
+					      "species": "Black pomfret",
 					      "lower_range": "5",
 					      "higher_range": "10",
 					      "uom": "KG",
 					      "average_price": "7.5"
 					    },{
-					      "name": "White Pomfret",
+					      "species": "White Pomfret",
 					      "lower_range": "5",
 					      "higher_range": "10",
 					      "uom": "KG",
 					      "average_price": "7.5"
 					    },{
-					      "name": "Torpedo scad",
+					      "species": "Torpedo scad",
 					      "lower_range": "5",
 					      "higher_range": "10",
 					      "uom": "KG",
@@ -110,7 +110,39 @@ sap.ui.define([
 		},
 		
 		_setSearchDefaultValue: function(sLocation){
-			this.getView().byId("idSearchField").setValue(sLocation).fireSearch();
+			this.getView().byId("idSearchField").setValue(sLocation).fireSearch({"query":sLocation});
+		},
+		
+		setFishPhoto: function(sName){
+			switch(sName){
+				case "Mackerel tuna":
+					return "img/MackeralTuna.jpg";
+					break;
+				case "Black pomfret":
+					return "img/Blackpomfret.jpg";
+					break;
+				case "White Pomfret":
+					return "img/WhitePomfret.jpg";
+					break;
+				case "Torpedo scad":
+					return "img/TorpedoScad.jpg";
+					break;
+			}
+		},
+		
+		onPressItem: function(oEvent){
+			var sFish = oEvent.getSource().getBindingContext("local").getObject().species;
+			var sLoc = this.getView().byId("idSearchField").getValue();
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("Listing", {
+				location: sLoc,
+				fish: sFish
+			});
+		},
+		
+		onPressInputData: function(oEvent){
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("InputData");
 		}
 
 

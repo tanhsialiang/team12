@@ -80,12 +80,30 @@
 					"pattern": "",
 					"name": "InitList",
 					"target": "InitList"
+				},
+				{
+					"pattern": "List/{location},{fish}",
+					"name": "Listing",
+					"target": "Listing"
+				},
+				{
+					"pattern": "Input",
+					"name": "InputData",
+					"target": "InputData"
 				}
 			],
 			"targets": {
 				"InitList": {
 					"viewType": "XML",
 					"viewName": "InitList"
+				},
+				"Listing": {
+					"viewType": "XML",
+					"viewName": "Listing"
+				},
+				"InputData": {
+					"viewType": "XML",
+					"viewName": "InputData"
 				}
 			}
 		}

@@ -1,0 +1,35 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="team12.Team12_Fish.controller.Listing"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page title="Listing" showNavButton="true" navButtonPress="onNavBack" >
+				<content>
+					<Table
+						id="idList"
+						items="{local>/}" >
+						<columns>
+							<Column>
+								<Text text="Date" />
+							</Column>
+							<Column>
+								<Text text="Seller" />
+							</Column>
+							<Column>
+								<Text text="Price/Kg" />
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{local>_source/date}"/>
+									<Text text="{local>_source/seller}"/>
+									<Text text="RM {local>_source/price}/{local>_source/unit}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
