@@ -1,7 +1,10 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/core/routing/History"
-], function(Controller, History) {
+	"sap/ui/core/routing/History",
+	"sap/ui/model/json/JSONModel",
+	"team12/Team12_Fish/util/location",
+	"team12/Team12_Fish/util/data"
+], function(Controller, History, JSONModel, Location, Data) {
 	"use strict";
 
 	return Controller.extend("team12.Team12_Fish.controller.InputData", {
@@ -11,9 +14,36 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf team12.Team12_Fish.view.InputData
 		 */
-		//	onInit: function() {
-		//
-		//	},
+		onInit: function() {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.getRoute("InputData").attachPatternMatched(this._onObjectMatched, this);
+		},
+		
+		_onObjectMatched: function (oEvent) {
+			this.oLocUtil = new Location();
+			this.getView().setBusy(true);
+			var oSpeciesModel = new JSONModel({
+			  "results": [
+			    {
+			      "commonName": "Mackerel tuna",
+			      "scientificName": "Euthynnus affinis"
+			    },{
+			      "commonName": "Black pomfret",
+			      "scientificName": "Parastromateus niger"
+			    },{
+			      "commonName": "White Pomfret",
+			      "scientificName": "Pampus argenteus"
+			    },{
+			      "commonName": "Torpedo scad",
+			      "scientificName": "Megalaspis cordyla"
+			    }
+			  ]
+			});
+			// oSpeciesModel.loadData("model/species.json");
+			this.getView().setModel(oSpeciesModel,"species");
+			this.oLocUtil.getLocation(jQuery.proxy(this._setFormDefaultValue, this), false);
+			
+		},
 		
 		onNavBack: function () {
 			var oHistory = History.getInstance();
@@ -25,6 +55,50 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.navTo("InitList", true);
 			}
+		},
+		
+		_setFormDefaultValue: function(sLocation){
+			this.getView().setModel(new JSONModel({"seller": "Seller 1", "sellerID": "888", "location": sLocation}), "form");
+			this.getView().setBusy(false);
+		},
+		
+		onSubmit: function(){
+			var that = this
+			this.getView().setBusy(true);
+			var oData = this.getView().getModel("form").getData();
+			oData.unit = "KG";
+			oData.price = parseFloat(oData.price);
+			oData.date = new Date().toISOString().split('T')[0];
+			oData.month = new Date().getMonth() + 1;
+			oData.year = new Date().getYear();
+			oData.day = new Date().getDate();
+			oData.buyerType = '';
+			switch(oData.commonName){
+				case "Mackerel tuna":
+					oData.scientificName = "Euthynnus affinis";
+					break;
+				case "Black pomfret":
+					oData.scientificName = "Parastromateus niger";
+					break;
+				case "White Pomfret":
+					oData.scientificName = "Pampus argenteuss";
+					break;
+				case "Torpedo scad":
+					oData.scientificName = "Megalaspis cordyla";
+					break;
+				default:
+					oData.scientificName = oData.commonName;
+					break;
+			}
+			console.log(oData);
+			
+			Data.getInstance().postData(oData).then(
+				function(){
+		  			that.getView().setBusy(false);
+			}).catch(function(oError){
+				that.getView().setBusy(false);
+				new sap.m.MessageToast.show("Error while posting");
+			});  
 		}
 
 		/**

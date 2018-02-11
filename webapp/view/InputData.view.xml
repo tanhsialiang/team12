@@ -9,24 +9,28 @@
 						<f:SimpleForm id="SimpleFormChange354" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 							<f:content>
 								<Label text="Seller"/>
-								<Input id="seller" value="{SupplierName}" editable="false"/>
+								<Input id="seller" value="{form>/seller}" editable="false"/>
 								
 								<Label text="Species"/>
-								<Input id="species" value="{Species}"/>
+								<Input id="species" value="{form>/species}" showSuggestion="true" suggestionItems="{species>/results}" >
+									<suggestionItems>
+										<core:Item text="{species>commonName}" />
+									</suggestionItems>
+								</Input>
 								<Label text="Price (per KG)"/>
-								<Input value="{price}">
+								<Input value="{form>/price}" type="Number">
 									<layoutData>
 										<l:GridData span="XL1 L2 M2 S4"/>
 									</layoutData>
 								</Input>
-								<Label text="Weight (KG)"/>
-								<Input value="{weight}">
+								<Label text="Total Weight (KG)"/>
+								<Input value="{form>/weight}" type="Number">
 									<layoutData>
 										<l:GridData span="XL1 L2 M2 S4"/>
 									</layoutData>
 								</Input>
 								<Label text="Pick Up Point"/>
-								<Input value="{Street}">
+								<Input value="{form>/location}">
 								</Input>
 								<Label text="Upload your catch"/>
 								<l:VerticalLayout>
@@ -36,14 +40,20 @@
 										uploadUrl="upload/"
 										tooltip="Upload your file to the local server"
 										uploadComplete="handleUploadComplete"/>
-									<Button
-										text="Upload File"
-										press="handleUploadPress"/>
+									<!--<Button-->
+									<!--	text="Upload File"-->
+									<!--	press="handleUploadPress"/>-->
 								</l:VerticalLayout>
 							</f:content>
 						</f:SimpleForm>
 					</VBox>
 				</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="Submit" type="Emphasized" press="onSubmit" />
+					</Toolbar>
+				</footer>
 			</Page>
 		</pages>
 	</App>

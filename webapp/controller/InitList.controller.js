@@ -20,10 +20,15 @@ sap.ui.define([
 				oRouter.getRoute("InitList").attachPatternMatched(this._onObjectMatched, this);
 				
 				this.getView().setBusy(true);
-				this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));  
+				this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this), true);  
 			},
 			
 			_onObjectMatched: function (oEvent) {
+				// debugger;
+				var sLocation = this.getView().byId("idSearchField").getValue();
+				if(sLocation !== ""){
+					this.getView().byId("idSearchField").fireSearch({"query":sLocation});
+				}
 				// this.getView().bindElement({
 				// 	path: "/" + oEvent.getParameter("arguments").invoicePath,
 				// 	model: "invoice"
@@ -158,7 +163,7 @@ sap.ui.define([
 		},
 		
 		setAveragePrice: function(iPrice){
-			return "RM" + iPrice.toFixed(2) + "/KG";
+			return "RM" + parseFloat(iPrice).toFixed(2) + "/KG";
 		}
 
 

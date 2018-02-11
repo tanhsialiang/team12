@@ -4,7 +4,14 @@
 		<pages>
 			<Page title="Listing" showNavButton="true" navButtonPress="onNavBack" >
 				<content>
-					
+					<gmaps:Map height="250px" zoom="12" lat="-33.895" lng="151.275"
+						apiKey="AIzaSyDdfCuwONEVZ97agcRgvCyydOh3VQ4OsfU">
+				        <gmaps:markers>
+				            <gmaps:Marker lat="-33.895" lng="151.275" info="Bondi Beach" />
+				            <gmaps:Marker lat="-33.895" lng="152.275" info="Somewhere" />
+				            <gmaps:Marker lat="-32.895" lng="151.275" info="Elsewhere" />
+				        </gmaps:markers>
+				    </gmaps:Map>
 					<Table
 						id="idList"
 						items="{local>/hits/hits}" >

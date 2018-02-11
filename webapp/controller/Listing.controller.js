@@ -14,7 +14,7 @@ sap.ui.define([
 		 * @memberOf team12.Team12_Fish.view.Listing
 		 */
 			onInit: function() {
-				this.getView().setModel(new JSONModel(), "local");
+				// this.getView().setModel(new JSONModel(), "local");
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.getRoute("Listing").attachPatternMatched(this._onObjectMatched, this);
 			},

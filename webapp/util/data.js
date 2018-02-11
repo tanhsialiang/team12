@@ -42,6 +42,28 @@ sap.ui.define([
 	    	// }
 
 		});
+    },
+    postData: function(oEntry) {
+    	return new Promise(function (resolve, reject) {
+    		// if(oLocalModel.getJSON() === "{}" || bForceRefresh){
+		    	$.ajax({
+				  type: "POST",
+				  url: '/api/upload',
+				  dataType: "json", 
+		          data: JSON.stringify(oEntry),
+		          contentType: "application/json" ,
+				  success: function(oResult) {
+					  resolve();
+		          },
+		            error: function() { 
+		            	reject();
+		            }  
+				});
+	    	// } else {
+	    	// 	resolve();
+	    	// }
+
+		});
     }
   });
   return {
