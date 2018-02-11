@@ -1,12 +1,13 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="team12.Team12_Fish.controller.Listing"
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:gmaps="openui5.googlemaps" controllerName="team12.Team12_Fish.controller.Listing"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
 			<Page title="Listing" showNavButton="true" navButtonPress="onNavBack" >
 				<content>
+					
 					<Table
 						id="idList"
-						items="{local>/}" >
+						items="{local>/hits/hits}" >
 						<columns>
 							<Column>
 								<Text text="Date" />

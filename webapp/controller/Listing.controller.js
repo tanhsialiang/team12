@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/ui/core/routing/History"
-], function(Controller, JSONModel,History) {
+	"sap/ui/core/routing/History",
+	"team12/Team12_Fish/util/data"
+], function(Controller, JSONModel,History, data) {
 	"use strict";
 
 	return Controller.extend("team12.Team12_Fish.controller.Listing", {
@@ -23,30 +24,22 @@ sap.ui.define([
 				// 	path: "/" + oEvent.getParameter("arguments").invoicePath,
 				// 	model: "invoice"
 				// });
-				// this.getView().setBusy(true);
-				// this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));   
+				
+				// this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this)); 
 				var oSearch = oEvent.getParameter("arguments");
 				var oEntry = {};
 				oEntry.query = [];
 				oEntry.query.push({"field": "location", "value": oSearch.location});
 				oEntry.query.push({"field": "species", "value": oSearch.fish});
 				var that = this;
-				$.ajax({
-				  type: "POST",
-				  url: '/api/search',
-				  dataType: "json", 
-	              data: JSON.stringify(oEntry),
-	              contentType: "application/json" ,
-				  success: function(oResult) {  
-					  var oJsonModel = that.getView().getModel("local");
-					  oJsonModel.setData(oResult.hits.hits);
-						that.getView().setBusy(false);
-	                    
-	              },
-	                error: function() {  
-	                	new sap.m.MessageToast.show("Error while searching");
-	                }  
-				});
+				this.getView().setBusy(true);
+				data.getInstance().getData(that.getView().getModel("local"), false, oEntry).then(
+					function(){
+			  			that.getView().setBusy(false);
+				}).catch(function(oError){
+					that.getView().setBusy(false);
+					new sap.m.MessageToast.show("Error while searching");
+				});          
 			},
 			
 			onNavBack: function () {

@@ -13,7 +13,7 @@
 				<content>
 					<Table
 						id="idList"
-						items="{local>/results}" >
+						items="{local>/agg}" >
 						<columns>
 							<Column>
 							</Column>
@@ -32,16 +32,19 @@
 								<cells>
 									<Image
 										src="{
-											path: 'local>species',
+											path: 'local>name',
 											formatter: '.setFishPhoto'
 										}"
 										densityAware="false"
 										width="100%" >
 									</Image>
 									<ObjectIdentifier
-										title="{local>species}"/>
-									<Text text="RM {local>average_price}/{local>uom}"/>
-									<Text text="RM {local>lower_range} - RM{local>higher_range}/{local>uom}"/>
+										title="{local>name}"/>
+									<Text text="{
+											path: 'local>avg',
+											formatter: '.setAveragePrice'
+										}"/>
+									<Text text="RM {local>max} - RM{local>min}/KG"/>
 								</cells>
 							</ColumnListItem>
 						</items>

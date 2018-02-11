@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"team12/Team12_Fish/util/location"
-], function(Controller, JSONModel,Location) {
+	"team12/Team12_Fish/util/location",
+	"team12/Team12_Fish/util/data"
+], function(Controller, JSONModel,Location, data) {
 	"use strict";
 
 	return Controller.extend("team12.Team12_Fish.controller.InitList", {
@@ -14,9 +15,12 @@ sap.ui.define([
 		 */
 			onInit: function() {
 				this.oLocUtil = new Location();
-				this.getView().setModel(new JSONModel(), "local");
+				// this.getView().setModel(new JSONModel(), "local");
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 				oRouter.getRoute("InitList").attachPatternMatched(this._onObjectMatched, this);
+				
+				this.getView().setBusy(true);
+				this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));  
 			},
 			
 			_onObjectMatched: function (oEvent) {
@@ -24,8 +28,8 @@ sap.ui.define([
 				// 	path: "/" + oEvent.getParameter("arguments").invoicePath,
 				// 	model: "invoice"
 				// });
-				this.getView().setBusy(true);
-				this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));          
+				// this.getView().setBusy(true);
+				// this.oLocUtil.getLocation(jQuery.proxy(this._setSearchDefaultValue, this));          
 			},
 
 		/**
@@ -62,51 +66,59 @@ sap.ui.define([
 			if(oEvent.getParameter("query")!== ""){
 				oEntry.query.push({"field": "location", "value": oEvent.getParameter("query")});
 			}
+			data.getInstance().getData(that.getView().getModel("local"), false, oEntry).then(
+				function(){
+		  			that.getView().setBusy(false);
+			}).catch(function(oError){
+				that.getView().setBusy(false);
+				new sap.m.MessageToast.show("Error while searching");
+			});  
 			
-			$.ajax({
-			  type: "POST",
-			  url: '/api/search',
-			  dataType: "json", 
-              data: JSON.stringify(oEntry),
-              contentType: "application/json" ,
-			  success: function(oResult) {  
-				  var oJsonModel = that.getView().getModel("local");
-				  oJsonModel.setData({
-					  "results": [
-					    {
-					      "species": "Mackerel tuna",
-					      "lower_range": "5",
-					      "higher_range": "10",
-					      "uom": "KG",
-					      "average_price": "7.5"
-					    },{
-					      "species": "Black pomfret",
-					      "lower_range": "5",
-					      "higher_range": "10",
-					      "uom": "KG",
-					      "average_price": "7.5"
-					    },{
-					      "species": "White Pomfret",
-					      "lower_range": "5",
-					      "higher_range": "10",
-					      "uom": "KG",
-					      "average_price": "7.5"
-					    },{
-					      "species": "Torpedo scad",
-					      "lower_range": "5",
-					      "higher_range": "10",
-					      "uom": "KG",
-					      "average_price": "7.5"
-					    }
-					  ]
-					});
-					that.getView().setBusy(false);
+			
+			// $.ajax({
+			//   type: "POST",
+			//   url: '/api/search',
+			//   dataType: "json", 
+   //           data: JSON.stringify(oEntry),
+   //           contentType: "application/json" ,
+			//   success: function(oResult) {  
+			// 	  var oJsonModel = that.getView().getModel("local");
+			// 	  oJsonModel.setData({
+			// 		  "results": [
+			// 		    {
+			// 		      "species": "Mackerel tuna",
+			// 		      "lower_range": "5",
+			// 		      "higher_range": "10",
+			// 		      "uom": "KG",
+			// 		      "average_price": "7.5"
+			// 		    },{
+			// 		      "species": "Black pomfret",
+			// 		      "lower_range": "5",
+			// 		      "higher_range": "10",
+			// 		      "uom": "KG",
+			// 		      "average_price": "7.5"
+			// 		    },{
+			// 		      "species": "White Pomfret",
+			// 		      "lower_range": "5",
+			// 		      "higher_range": "10",
+			// 		      "uom": "KG",
+			// 		      "average_price": "7.5"
+			// 		    },{
+			// 		      "species": "Torpedo scad",
+			// 		      "lower_range": "5",
+			// 		      "higher_range": "10",
+			// 		      "uom": "KG",
+			// 		      "average_price": "7.5"
+			// 		    }
+			// 		  ]
+			// 		});
+			// 		that.getView().setBusy(false);
                     
-              },
-                error: function() {  
-                	new sap.m.MessageToast.show("Error while searching");
-                }  
-			});
+   //           },
+   //             error: function() {  
+   //             	new sap.m.MessageToast.show("Error while searching");
+   //             }  
+			// });
 		},
 		
 		_setSearchDefaultValue: function(sLocation){
@@ -131,7 +143,7 @@ sap.ui.define([
 		},
 		
 		onPressItem: function(oEvent){
-			var sFish = oEvent.getSource().getBindingContext("local").getObject().species;
+			var sFish = oEvent.getSource().getBindingContext("local").getObject().name;
 			var sLoc = this.getView().byId("idSearchField").getValue();
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("Listing", {
@@ -143,6 +155,10 @@ sap.ui.define([
 		onPressInputData: function(oEvent){
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("InputData");
+		},
+		
+		setAveragePrice: function(iPrice){
+			return "RM" + iPrice.toFixed(2) + "/KG";
 		}
 
 
